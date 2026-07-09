@@ -1,4 +1,4 @@
-package models.car;
+package car;
 
 public enum Brand {
     ALFA_ROMEO,

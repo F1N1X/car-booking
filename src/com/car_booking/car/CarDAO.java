@@ -39,6 +39,10 @@ public class CarDAO {
 
         throw new NoCarFoundException("Car not found");
     }
+
+    public Car[] getAllCars() {
+        return cars;
+    }
 }
 
 

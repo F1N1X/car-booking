@@ -18,4 +18,8 @@ public class CarService {
     public Car getCarByRegistrationNumber(String number) {
         return carDao.getCarByRegistrationNumber(number);
     }
+
+    public Car[] getAllCars() {
+        return carDao.getAllCars();
+    }
 }
