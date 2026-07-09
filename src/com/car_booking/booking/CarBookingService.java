@@ -10,6 +10,7 @@ import user.UserService;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeParseException;
 import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
 import java.util.Scanner;
@@ -29,25 +30,68 @@ public class CarBookingService {
         carBookingDao = new CarBookingDao();
     }
 
+    private UUID readUUIDFromUser(String text) {
+        UUID userInput = null;
+        try {
+            System.out.println(text);
+            userInput = UUID.fromString(scanner.next());
+        } catch (IllegalArgumentException e) {
+            System.out.println("Enter a valid UUID");
+            return readUUIDFromUser(text);
+        }
+        return userInput;
+    }
 
+    private String readString(String text) {
+        String input = "";
+        try {
+            System.out.println(text);
+            input = scanner.next();
+        } catch (IllegalArgumentException e) {
+            System.out.println("Enter valid String");
+            return readString(text);
+        }
+        return input;
+    }
+
+    private LocalDate readDate(String text) {
+        LocalDate inputDate;
+        try {
+            System.out.println(text);
+            inputDate = LocalDate.parse(scanner.next());
+
+        } catch (DateTimeParseException | IllegalArgumentException e) {
+            return readDate(text);
+        }
+        return inputDate;
+    }
+
+    private boolean isValidBookingPeriod(LocalDate start, LocalDate end) {
+        return start.isBefore(end);
+    }
+
+    private BigDecimal calculatePrice(LocalDate start, LocalDate end, BigDecimal rentalPricePerDay) {
+        long between = ChronoUnit.DAYS.between(start, end);
+        return rentalPricePerDay.multiply(BigDecimal.valueOf(between));
+    }
+
+
+    // TODO: creation of booking sep + shrink method
     public void bookCar() {
-        System.out.println("select car reg number");
-        String regNumber = scanner.nextLine();
-        System.out.println("select user id");
-        UUID userId = UUID.fromString(scanner.next());
+        String regNumber = readString("Enter registration number");
+        UUID userId = readUUIDFromUser("select user id");
         System.out.println("select start date");
-        LocalDate startDate = LocalDate.parse(scanner.next());
-        System.out.println("select start date");
-        LocalDate endDate = LocalDate.parse(scanner.next());
-        LocalDateTime bookedAt = LocalDateTime.now();
-        System.out.println("select car id");
-        UUID carId = UUID.fromString(scanner.next());
+        LocalDate startDate, endDate;
 
+        do {
+             startDate = readDate("Enter start date");
+             endDate = readDate("Enter endDate");
+        } while (!isValidBookingPeriod(startDate, endDate));
+
+        LocalDateTime bookedAt = LocalDateTime.now();
         User user = userService.getUser(userId);
         Car car = carService.getCarByRegistrationNumber(regNumber);
-
-        long between = ChronoUnit.DAYS.between(startDate, endDate);
-        BigDecimal price = car.getRentalPricePerDay().multiply(BigDecimal.valueOf(between));
+        BigDecimal price = calculatePrice(startDate, endDate, car.getRentalPricePerDay());
 
         CarBooking booking = new CarBooking(
                 price,
@@ -75,12 +119,14 @@ public class CarBookingService {
             System.out.println(carBookingDao.getAllBookings());
     }
 
+    // TODO: no cars
     public void viewAllAvaibleCars() {
         Car[] allCars = carService.getAllCars();
         Car[] listOfAvaible = carBookingDao.getAllAvaiableCars(allCars);
         System.out.println(Arrays.toString(listOfAvaible));
     }
 
+    // TODO: no electro cars
     public void viewAllAvaibleElectricCars() {
         Car[] allCars = carService.getAllCars();
         Car[] listOfAvaible = carBookingDao.getAllAvaiableCars(allCars);
