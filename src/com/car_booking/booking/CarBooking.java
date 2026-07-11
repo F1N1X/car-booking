@@ -68,7 +68,7 @@ public class CarBooking {
 
     @Override
     public String toString() {
-        return "CarBooking created \n" +
+        return  "id=" + id +
                 "\nuser=" + user +
                 "\ncar=" + car +
                 "\nstartDate=" + startDate +

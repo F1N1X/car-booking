@@ -4,7 +4,6 @@ import car.Car;
 import exceptions.*;
 import user.User;
 
-import java.util.Arrays;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -15,16 +14,15 @@ public class CarBookingDao {
     private static int capacity;
 
     static {
-        carBookings = new CarBooking[10];
+        carBookings = new CarBooking[3];
         capacity = carBookings.length;
     }
 
     public void addBooking(CarBooking carBooking) {
-
-        if (isCarBooked(carBooking.getCar())) throw new CarAllreadyBookedExecption("car is not available");
         if (capacity == 0) throw new NoCapacityException("no capacity to store");
+        if (isCarBooked(carBooking.getCar())) throw new CarAlreadyBookedException("car is not available");
 
-        carBookings[(carBookings.length - 1) % capacity] = carBooking;
+        carBookings[carBookings.length - capacity] = carBooking;
         capacity--;
     }
 
@@ -42,7 +40,7 @@ public class CarBookingDao {
         return carBookings;
     }
 
-    public Car[] getAllAvaiableCars(Car[] allCars) {
+    public Car[] getAllAvailableCars(Car[] allCars) {
 
         Car[] avaibleCar = new Car[allCars.length];
 
@@ -51,7 +49,7 @@ public class CarBookingDao {
         int insertPoint = 0;
         int foundCars = 0;
         for (Car car : allCars) {
-            if (!cointainCar(car)) {
+            if (!containsCar(car)) {
                 avaibleCar[insertPoint] = car;
                 insertPoint++;
                 foundCars++;
@@ -71,7 +69,7 @@ public class CarBookingDao {
         return avaibleCars;
     }
     
-    private boolean cointainCar(Car searchCar) {
+    private boolean containsCar(Car searchCar) {
         for (CarBooking booking : carBookings) {
             if (Objects.isNull(booking)) continue;
             if (booking.getCar().equals(searchCar))
@@ -99,18 +97,22 @@ public class CarBookingDao {
         CarBooking[] clearedArray = new CarBooking[carBookings.length];
         int insertPoint = 0;
         for (int i = 0; i < carBookings.length; i++) {
+            if (Objects.isNull(carBookings[i])) continue;
             if (!(carBookings[i].getId().compareTo(bookingId) == 0)) {
                 clearedArray[insertPoint] = carBookings[i];
                 insertPoint++;
             }
         }
+        carBookings = clearedArray;
         capacity++;
     }
 
     private boolean containsId(UUID bookingId) {
-        for (CarBooking booking : carBookings)
+        for (CarBooking booking : carBookings) {
+            if (Objects.isNull(booking)) continue;
             if (booking.getId().compareTo(bookingId) == 0)
                 return true;
+        }
         return false;
     }
 }

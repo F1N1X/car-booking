@@ -11,8 +11,6 @@ public class Main {
 
     private static final CarBookingService carBookingService = new CarBookingService();
 
-    // TODO: Error Handling Exceptions
-
     public static void main(String[] args) {
 
         Scanner scanner = new Scanner(System.in);
@@ -41,7 +39,6 @@ public class Main {
         }
 
     }
-
 
     private static boolean isValid(int userInput) {
         return userInput > 0 && userInput <= 8;

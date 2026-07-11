@@ -104,7 +104,7 @@ public class CarBookingService {
                     BookingStatus.ACTIVE);
 
             carBookingDao.addBooking(booking);
-            System.out.println("Booking is created");
+            System.out.println("Booking created");
             System.out.println(booking);
         }
     }
@@ -137,13 +137,13 @@ public class CarBookingService {
 
     public void viewAllAllAvailableCars() {
         Car[] allCars = carService.getAllCars();
-        Car[] listAvailable = carBookingDao.getAllAvaiableCars(allCars);
+        Car[] listAvailable = carBookingDao.getAllAvailableCars(allCars);
         System.out.println(Arrays.toString(listAvailable));
     }
 
     public void viewAllAvailableElectroCars() {
         Car[] allCars = carService.getAllCars();
-        Car[] listOfAvaible = carBookingDao.getAllAvaiableCars(allCars);
+        Car[] listOfAvaible = carBookingDao.getAllAvailableCars(allCars);
         for (Car car : listOfAvaible)
             if (car.isElectric())
                 System.out.println(car);

@@ -45,7 +45,6 @@ public class CarDAO {
         return cars;
     }
 
-
     public boolean regNumberExisting(String regNumber) {
         return !Objects.isNull(getCarByRegistrationNumber(regNumber));
     }
