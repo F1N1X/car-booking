@@ -1,5 +1,6 @@
 package user;
 
+import java.util.Objects;
 import java.util.UUID;
 
 public class UserService {
@@ -16,5 +17,9 @@ public class UserService {
 
     public String getAllUsers() {
         return userDao.getAllUsers();
+    }
+
+    public boolean checkUserExist(UUID userUuid) {
+        return !Objects.isNull(getUser(userUuid));
     }
 }

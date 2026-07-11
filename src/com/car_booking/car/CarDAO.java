@@ -3,6 +3,7 @@ package car;
 import exceptions.NoCarFoundException;
 
 import java.math.BigDecimal;
+import java.util.Objects;
 import java.util.UUID;
 
 public class CarDAO {
@@ -42,6 +43,11 @@ public class CarDAO {
 
     public Car[] getAllCars() {
         return cars;
+    }
+
+
+    public boolean regNumberExisting(String regNumber) {
+        return !Objects.isNull(getCarByRegistrationNumber(regNumber));
     }
 }
 

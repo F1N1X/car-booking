@@ -5,6 +5,7 @@ import exceptions.*;
 import user.User;
 
 import java.util.Arrays;
+import java.util.Objects;
 import java.util.UUID;
 
 
@@ -24,9 +25,11 @@ public class CarBookingDao {
         if (capacity == 0) throw new NoCapacityException("no capacity to store");
 
         carBookings[(carBookings.length - 1) % capacity] = carBooking;
+        capacity--;
     }
 
     private boolean isCarBooked(Car car) {
+        if (Objects.isNull(carBookings[0])) return false;
         for (CarBooking booking : carBookings)
             if (booking.getCar().getId()
                     .compareTo(car.getId()) == 0)
@@ -34,9 +37,9 @@ public class CarBookingDao {
         return false;
     }
 
-    public String getAllBookings() {
+    public CarBooking[] getAllBookings() {
         if (capacity == 10) throw new EmptyBookingException("No booking available");
-        return Arrays.toString(carBookings);
+        return carBookings;
     }
 
     public Car[] getAllAvaiableCars(Car[] allCars) {
@@ -69,9 +72,11 @@ public class CarBookingDao {
     }
     
     private boolean cointainCar(Car searchCar) {
-        for (CarBooking booking : carBookings)
+        for (CarBooking booking : carBookings) {
+            if (Objects.isNull(booking)) continue;
             if (booking.getCar().equals(searchCar))
                 return true;
+        }
      return false;
     }
 
@@ -80,8 +85,10 @@ public class CarBookingDao {
         if (capacity == 10) throw new EmptyBookingException("no bookings available");
 
         User[] userBookedCars = new User[carBookings.length];
-        for (int i = 0; i < carBookings.length; i++)
+        for (int i = 0; i < carBookings.length; i++) {
+            if (Objects.isNull(carBookings[i])) continue;
             userBookedCars[i] = carBookings[i].getUser();
+        }
         return userBookedCars;
     }
 

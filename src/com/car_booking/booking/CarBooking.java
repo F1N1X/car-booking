@@ -19,14 +19,13 @@ public class CarBooking {
     private final LocalDateTime bookedAt;
 
     public CarBooking(BigDecimal price,
-                      LocalDateTime bookedAt,
                       LocalDate startDate,
                       LocalDate endDate,
                       Car car,
                       User user,
                       BookingStatus status) {
         this.price = price;
-        this.bookedAt = bookedAt;
+        this.bookedAt = LocalDateTime.now();
         this.endDate = endDate;
         this.startDate = startDate;
         this.car = car;
@@ -69,15 +68,12 @@ public class CarBooking {
 
     @Override
     public String toString() {
-        return "CarBooking{" +
-                "id=" + id +
-                ", user=" + user +
-                ", car=" + car +
-                ", startDate=" + startDate +
-                ", endDate=" + endDate +
-                ", price=" + price +
-                ", status=" + status +
-                ", bookedAt=" + bookedAt +
-                '}';
+        return "CarBooking created \n" +
+                "\nuser=" + user +
+                "\ncar=" + car +
+                "\nstartDate=" + startDate +
+                "\tendDate=" + endDate +
+                "\nprice=" + price +
+                "bookedAt=" + bookedAt;
     }
 }

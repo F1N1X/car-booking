@@ -26,7 +26,6 @@ public class UserDAO {
         for (User user : users)
             if (user.getId().equals(id))
                 return user;
-
         throw new NoUserFoundException("No User with the id " + id + " found");
     }
 

@@ -9,10 +9,10 @@ import user.UserService;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.format.DateTimeParseException;
 import java.time.temporal.ChronoUnit;
 import java.util.Arrays;
+import java.util.Objects;
 import java.util.Scanner;
 import java.util.UUID;
 
@@ -67,7 +67,11 @@ public class CarBookingService {
     }
 
     private boolean isValidBookingPeriod(LocalDate start, LocalDate end) {
-        return start.isBefore(end);
+        if (!start.isBefore(end)) {
+            System.out.println("The start date cannot be in the past or after the end date.");
+            return false;
+        }
+      return true;
     }
 
     private BigDecimal calculatePrice(LocalDate start, LocalDate end, BigDecimal rentalPricePerDay) {
@@ -75,34 +79,42 @@ public class CarBookingService {
         return rentalPricePerDay.multiply(BigDecimal.valueOf(between));
     }
 
-
-    // TODO: creation of booking sep + shrink method
     public void bookCar() {
         String regNumber = readString("Enter registration number");
         UUID userId = readUUIDFromUser("select user id");
-        System.out.println("select start date");
-        LocalDate startDate, endDate;
 
-        do {
-             startDate = readDate("Enter start date");
-             endDate = readDate("Enter endDate");
-        } while (!isValidBookingPeriod(startDate, endDate));
+        if (userExist(userId) && existingRegNumber(regNumber)) {
+            LocalDate startDate, endDate;
 
-        LocalDateTime bookedAt = LocalDateTime.now();
-        User user = userService.getUser(userId);
-        Car car = carService.getCarByRegistrationNumber(regNumber);
-        BigDecimal price = calculatePrice(startDate, endDate, car.getRentalPricePerDay());
+            do {
+                startDate = readDate("Enter start date");
+                endDate = readDate("Enter endDate");
+            } while (!isValidBookingPeriod(startDate, endDate));
 
-        CarBooking booking = new CarBooking(
-                price,
-                bookedAt,
-                startDate,
-                endDate,
-                car,
-                user,
-                BookingStatus.ACTIVE);
 
-        carBookingDao.addBooking(booking);
+            User user = userService.getUser(userId);
+            Car car = carService.getCarByRegistrationNumber(regNumber);
+
+            CarBooking booking = new CarBooking(
+                    calculatePrice(startDate, endDate, car.getRentalPricePerDay()),
+                    startDate,
+                    endDate,
+                    car,
+                    user,
+                    BookingStatus.ACTIVE);
+
+            carBookingDao.addBooking(booking);
+            System.out.println("Booking is created");
+            System.out.println(booking);
+        }
+    }
+
+    private boolean userExist(UUID userId) {
+        return userService.checkUserExist(userId);
+    }
+
+    private boolean existingRegNumber(String regNumber) {
+        return carService.regNumberExisting(regNumber);
     }
 
     public void deleteBooking() throws NoBookingFoundException {
@@ -112,22 +124,24 @@ public class CarBookingService {
     }
 
     public void viewAllUserBookingCars() throws EmptyBookingException{
-            System.out.println(Arrays.toString(carBookingDao.getAllUserBookedCars()));
+            for (User user : carBookingDao.getAllUserBookedCars())
+                if (!Objects.isNull(user))
+                    System.out.println(user);
     }
 
     public void viewAllBookings() throws EmptyBookingException{
-            System.out.println(carBookingDao.getAllBookings());
+            for (CarBooking booking : carBookingDao.getAllBookings())
+                if (!Objects.isNull(booking))
+                    System.out.println(booking);
     }
 
-    // TODO: no cars
-    public void viewAllAvaibleCars() {
+    public void viewAllAllAvailableCars() {
         Car[] allCars = carService.getAllCars();
-        Car[] listOfAvaible = carBookingDao.getAllAvaiableCars(allCars);
-        System.out.println(Arrays.toString(listOfAvaible));
+        Car[] listAvailable = carBookingDao.getAllAvaiableCars(allCars);
+        System.out.println(Arrays.toString(listAvailable));
     }
 
-    // TODO: no electro cars
-    public void viewAllAvaibleElectricCars() {
+    public void viewAllAvailableElectroCars() {
         Car[] allCars = carService.getAllCars();
         Car[] listOfAvaible = carBookingDao.getAllAvaiableCars(allCars);
         for (Car car : listOfAvaible)
