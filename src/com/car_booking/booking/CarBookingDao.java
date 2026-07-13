@@ -80,7 +80,7 @@ public class CarBookingDao {
 
     public User[] getAllUserBookedCars() {
 
-        if (capacity == 10) throw new EmptyBookingException("no bookings available");
+        if (capacity == carBookings.length) throw new EmptyBookingException("no bookings available");
 
         User[] userBookedCars = new User[carBookings.length];
         for (int i = 0; i < carBookings.length; i++) {

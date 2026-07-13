@@ -9,14 +9,14 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 public class CarBooking {
-    private final UUID id;
-    private final User user;
-    private final Car car;
-    private final LocalDate startDate;
-    private final LocalDate endDate;
-    private final BigDecimal price;
+    private UUID id;
+    private User user;
+    private Car car;
+    private LocalDate startDate;
+    private LocalDate endDate;
+    private BigDecimal price;
     private BookingStatus status;
-    private final LocalDateTime bookedAt;
+    private LocalDateTime bookedAt;
 
     public CarBooking(BigDecimal price,
                       LocalDate startDate,
@@ -74,6 +74,6 @@ public class CarBooking {
                 "\nstartDate=" + startDate +
                 "\tendDate=" + endDate +
                 "\nprice=" + price +
-                "bookedAt=" + bookedAt;
+                "\nbookedAt=" + bookedAt;
     }
 }
