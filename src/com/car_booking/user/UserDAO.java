@@ -1,8 +1,6 @@
 package user;
 
 import exceptions.NoUserFoundException;
-
-import java.util.Arrays;
 import java.util.UUID;
 
 public class UserDAO {
@@ -29,7 +27,7 @@ public class UserDAO {
         throw new NoUserFoundException("No User with the id " + id + " found");
     }
 
-    public String getAllUsers() {
-        return Arrays.toString(users);
+    public User[] getAllUsers() {
+        return users;
     }
 }

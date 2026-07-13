@@ -3,7 +3,10 @@
 // TODO 2. create a package with your name. i.e com.franco and move this file inside the new package
 // TODO 3. implement https://amigoscode.com/learn/java-cli-build/lectures/3a83ecf3-e837-4ae5-85a8-f8ae3f60f7f5
 
+import booking.CarBooking;
 import booking.CarBookingService;
+import car.Car;
+import user.User;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
@@ -63,12 +66,34 @@ public class Main {
               case 2 -> {
                   UUID bookingId = readUUIDFromUser("Put the UUID from the Booking");
                   carBookingService.deleteBooking(bookingId);
+                  System.out.println("Booking deleted with id: "+bookingId);
               }
-              case 3 -> carBookingService.viewAllUserBookingCars();
-              case 4 -> carBookingService.viewAllBookings();
-              case 5 -> carBookingService.viewAllAllAvailableCars();
-              case 6 -> carBookingService.viewAllAvailableElectricCars();
-              case 7 -> carBookingService.viewAllUsers();
+              case 3 -> {
+                  User[] users = carBookingService.viewAllUserBookingCars();
+                  for (User user : users)
+                      System.out.println(user);
+              }
+              case 4 -> {
+                  CarBooking[] carBookings = carBookingService.viewAllBookings();
+                  for (CarBooking booking : carBookings)
+                      System.out.println(booking);
+              }
+              case 5 -> {
+                  Car[] cars = carBookingService.viewAllAllAvailableCars();
+                  for (Car car : cars)
+                      System.out.println(car);
+              }
+              case 6 -> {
+                  Car[] cars = carBookingService.viewAllAvailableElectricCars();
+                  for (Car car : cars)
+                      if (car.isElectric())
+                          System.out.println(car);
+              }
+              case 7 -> {
+                  User[] users = carBookingService.viewAllUsers();
+                  for (User user : users)
+                      System.out.println(user);
+              }
               default -> throw new IllegalStateException("Unexpected value: " + userChoice);
           }
       } catch (RuntimeException e) {
@@ -90,7 +115,7 @@ public class Main {
         return true;
     }
     private static UUID readUUIDFromUser(String text) {
-        UUID userInput = null;
+        UUID userInput;
         try {
             System.out.println(text);
             userInput = UUID.fromString(scanner.next());
@@ -102,7 +127,7 @@ public class Main {
     }
 
     private static String readString(String text) {
-        String input = "";
+        String input;
         try {
             System.out.println(text);
             input = scanner.next();
@@ -120,6 +145,7 @@ public class Main {
             inputDate = LocalDate.parse(scanner.next());
 
         } catch (DateTimeParseException | IllegalArgumentException e) {
+            System.out.println("invalid format for LocalDate");
             return readDate(text);
         }
         return inputDate;

@@ -31,6 +31,9 @@ public class CarBookingService {
 
     public void bookCar(UUID userId, String registerNumber, LocalDate startDate, LocalDate endDate) {
 
+           if (!userExist(userId) || existingRegNumber(registerNumber))
+               throw new IllegalArgumentException("user or register number not exist");
+
             User user = userService.getUser(userId);
             Car car = carService.getCarByRegistrationNumber(registerNumber);
 
@@ -76,7 +79,7 @@ public class CarBookingService {
         return carBookingDao.getAllAvailableCars(allCars);
     }
 
-    public String viewAllUsers() {
+    public User[] viewAllUsers() {
         return userService.getAllUsers();
     }
 }
