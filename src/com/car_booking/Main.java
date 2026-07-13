@@ -37,7 +37,6 @@ public class Main {
             if (!isValid(userInput))
                 System.out.println("Please pick a number between 1 - 8");
             else {
-
                 if (userInput == 8) return;
                 booking(userInput);
             }
