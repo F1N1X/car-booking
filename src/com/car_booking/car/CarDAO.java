@@ -3,7 +3,7 @@ package car;
 import exceptions.NoCarFoundException;
 
 import java.math.BigDecimal;
-import java.util.Objects;
+import java.util.Optional;
 import java.util.UUID;
 
 public class CarDAO {
@@ -25,20 +25,21 @@ public class CarDAO {
                 };
     }
 
-    public Car getCarById(UUID carId) {
+    public Optional<Car> getCarById(UUID carId) {
         for (Car car : cars)
             if (car.getId().compareTo(carId) == 0)
-                return car;
+                return Optional.of(car);
 
-        throw new NoCarFoundException("Car not found");
+        return Optional.empty();
     }
 
-    public Car getCarByRegistrationNumber(String number) {
+
+    public Optional<Car> getCarByRegistrationNumber(String number) {
         for (Car car : cars)
             if (car.getRegNumber().equals(number))
-                return car;
+                return Optional.of(car);
 
-        throw new NoCarFoundException("Car not found");
+        return Optional.empty();
     }
 
     public Car[] getAllCars() {
@@ -46,7 +47,7 @@ public class CarDAO {
     }
 
     public boolean regNumberExisting(String regNumber) {
-        return !Objects.isNull(getCarByRegistrationNumber(regNumber));
+        return getCarByRegistrationNumber(regNumber).isPresent();
     }
 }
 
