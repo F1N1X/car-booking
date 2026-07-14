@@ -46,25 +46,7 @@ public class CarBooking {
         return car;
     }
 
-    public LocalDate getStartDate() {
-        return startDate;
-    }
 
-    public LocalDate getEndDate() {
-        return endDate;
-    }
-
-    public BigDecimal getPrice() {
-        return price;
-    }
-
-    public BookingStatus getStatus() {
-        return status;
-    }
-
-    public LocalDateTime getBookedAt() {
-        return bookedAt;
-    }
 
     @Override
     public String toString() {

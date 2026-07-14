@@ -71,12 +71,12 @@ public class CarBookingService {
 
     public Car[] viewAllAllAvailableCars() {
         Car[] allCars = carService.getAllCars();
-        return carBookingDao.getAllAvailableCars(allCars);
+        return carBookingDao.getAllBookedCars(allCars);
     }
 
     public Car[] viewAllAvailableElectricCars() {
         Car[] allCars = carService.getAllCars();
-        return carBookingDao.getAllAvailableCars(allCars);
+        return carBookingDao.getAllBookedCars(allCars);
     }
 
     public User[] viewAllUsers() {
