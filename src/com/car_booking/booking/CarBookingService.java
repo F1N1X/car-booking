@@ -34,7 +34,7 @@ public class CarBookingService {
            if (!userExist(userId) || existingRegNumber(registerNumber))
                throw new IllegalArgumentException("user or register number not exist");
 
-            User user = userService.getUser(userId);
+            User user = userService.getUserByID(userId);
             Car car = carService.getCarByRegistrationNumber(registerNumber);
 
             CarBooking booking = new CarBooking(

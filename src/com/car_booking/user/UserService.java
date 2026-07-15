@@ -1,6 +1,6 @@
 package user;
 
-import java.util.Objects;
+import java.util.Optional;
 import java.util.UUID;
 
 public class UserService {
@@ -11,15 +11,11 @@ public class UserService {
        userDao = new UserDAO();
     }
 
-    public User getUser(UUID userId) {
+    public Optional<User> getUserByID(UUID userId) {
         return userDao.getUserById(userId);
     }
 
     public User[] getAllUsers() {
         return userDao.getAllUsers();
-    }
-
-    public boolean checkUserExist(UUID userUuid) {
-        return !Objects.isNull(getUser(userUuid));
     }
 }

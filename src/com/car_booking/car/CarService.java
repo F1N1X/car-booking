@@ -1,6 +1,7 @@
 package car;
 
 
+import java.util.Optional;
 
 public class CarService {
 
@@ -10,15 +11,11 @@ public class CarService {
         carDao = new CarDAO();
     }
 
-    public Car getCarByRegistrationNumber(String number) {
+    public Optional<Car> getCarByRegistrationNumber(String number) {
         return carDao.getCarByRegistrationNumber(number);
     }
 
     public Car[] getAllCars() {
         return carDao.getAllCars();
-    }
-
-    public boolean regNumberExisting(String regNumber) {
-        return carDao.regNumberExisting(regNumber);
     }
 }

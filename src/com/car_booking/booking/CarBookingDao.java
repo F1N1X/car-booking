@@ -34,7 +34,6 @@ public class CarBookingDao {
             if (car.equals(booking.getCar()))
                 return true;
         }
-
         return false;
     }
 
@@ -54,8 +53,8 @@ public class CarBookingDao {
     private int countBooking() {
         int count = 0;
 
-        for (int i = 0; i < carBookings.length; i++) {
-            if (carBookings[i] != null)
+        for (CarBooking carBooking : carBookings) {
+            if (carBooking != null)
                 count++;
         }
         return count;
@@ -69,11 +68,12 @@ public class CarBookingDao {
 
     public User[] getAllUserBookedCars() {
 
-        if (countBooking() == 0) throw new EmptyBookingException("no bookings available");
+        int findBookings = countBooking();
+        if (findBookings == 0) throw new EmptyBookingException("no bookings available");
 
-        User[] userBookedCars = new User[carBookings.length];
+        User[] userBookedCars = new User[findBookings];
         for (int i = 0; i < carBookings.length; i++) {
-            if (Objects.isNull(carBookings[i])) continue;
+            if (carBookings[i] == null) continue;
             userBookedCars[i] = carBookings[i].getUser();
         }
         return userBookedCars;
@@ -100,9 +100,9 @@ public class CarBookingDao {
         CarBooking[] filteredBookings = new CarBooking[countBooking()];
         int index = 0;
 
-        for (int i = 0; i < carBookings.length; i++) {
-            if (carBookings[i] != null) {
-                filteredBookings[index] = carBookings[i];
+        for (CarBooking carBooking : carBookings) {
+            if (carBooking != null) {
+                filteredBookings[index] = carBooking;
                 index++;
             }
         }

@@ -1,6 +1,6 @@
 package user;
 
-import exceptions.NoUserFoundException;
+import java.util.Optional;
 import java.util.UUID;
 
 public class UserDAO {
@@ -20,11 +20,11 @@ public class UserDAO {
         };
     }
 
-    public User getUserById(UUID id) {
+    public Optional<User> getUserById(UUID id) {
         for (User user : users)
-            if (user.getId().equals(id))
-                return user;
-        throw new NoUserFoundException("No User with the id " + id + " found");
+            if (user.getId().compareTo(id) == 0)
+                return Optional.of(user);
+        return Optional.empty();
     }
 
     public User[] getAllUsers() {
