@@ -94,15 +94,14 @@ public class Main {
       }}
 
     private static UUID readUUIDFromUser(String text) {
-        UUID userInput;
-        try {
-            System.out.println(text);
-            userInput = UUID.fromString(scanner.next());
-        } catch (IllegalArgumentException e) {
-            System.out.println("Enter a valid UUID");
-            return readUUIDFromUser(text);
+        while (true) {
+            try {
+                System.out.println(text);
+                return UUID.fromString(scanner.next());
+            } catch (IllegalArgumentException e) {
+                System.out.println("Enter a valid UUID");
+            }
         }
-        return userInput;
     }
 
     private static String readString(String text) {
