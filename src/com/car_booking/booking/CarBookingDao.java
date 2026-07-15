@@ -1,11 +1,9 @@
 package booking;
 
 import car.Car;
-import exceptions.*;
 import user.User;
 
 import java.util.*;
-
 
 public class CarBookingDao {
 
@@ -16,9 +14,6 @@ public class CarBookingDao {
     }
 
     public void addBooking(CarBooking carBooking) {
-
-        if (isCarBooked(carBooking.getCar())) throw new CarAlreadyBookedException("car is not available");
-
         int index = findInsertPoint();
 
         if (index == -1) {
@@ -28,7 +23,7 @@ public class CarBookingDao {
         carBookings[index] = carBooking;
     }
 
-    private boolean isCarBooked(Car car) {
+    public boolean isCarBooked(Car car) {
         for (CarBooking booking : carBookings) {
             if (booking == null) continue;
             if (car.equals(booking.getCar()))
@@ -62,27 +57,34 @@ public class CarBookingDao {
 
 
     public CarBooking[] getAllBookings() {
-        if (countBooking() == 0) throw new EmptyBookingException("No booking available");
+        if (countBooking() == 0) return new CarBooking[0];
         return filterCarBookings();
     }
 
     public User[] getAllUserBookedCars() {
 
         int findBookings = countBooking();
-        if (findBookings == 0) throw new EmptyBookingException("no bookings available");
+        if (findBookings == 0) return new User[0];
+
+        int indexForInsert = 0;
 
         User[] userBookedCars = new User[findBookings];
         for (int i = 0; i < carBookings.length; i++) {
             if (carBookings[i] == null) continue;
-            userBookedCars[i] = carBookings[i].getUser();
+            userBookedCars[indexForInsert++] = carBookings[i].getUser();
         }
         return userBookedCars;
     }
 
-    public void deleteBooking(UUID bookingId) {
-        int indexForDelete = findBookingIndex(bookingId).
-                orElseThrow(() -> new NoBookingFoundException("no booking found with booking id"));
-        carBookings[indexForDelete] = null;
+    public boolean deleteBooking(UUID bookingId) {
+            OptionalInt indexForDelete = findBookingIndex(bookingId);
+
+            if (indexForDelete.isEmpty()) {
+                return false;
+            }
+
+            carBookings[indexForDelete.getAsInt()] = null;
+            return true;
     }
 
     private OptionalInt findBookingIndex(UUID bookingId) {
@@ -108,4 +110,6 @@ public class CarBookingDao {
         }
         return filteredBookings;
     }
+
+
 }

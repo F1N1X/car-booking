@@ -51,15 +51,10 @@ public class Main {
       try {
           switch (userChoice) {
               case 1 ->  {
-                  LocalDate startDate, endDate;
-                  do {
-                      startDate = readDate("Enter start date");
-                      endDate = readDate("Enter endDate");
-                  } while (!isValidBookingPeriod(startDate, endDate) && invalidStartAndEnd(startDate, endDate));
-
+                  LocalDate startDate = readDate("Enter start date");
+                  LocalDate endDate = readDate("Enter endDate");
                   UUID userId = readUUIDFromUser("Put the UUID from User");
                   String registerNumber = readString("Enter Car register Number");
-
                   carBookingService.bookCar(userId, registerNumber, startDate, endDate);
               }
               case 2 -> {
@@ -78,7 +73,7 @@ public class Main {
                       System.out.println(booking);
               }
               case 5 -> {
-                  Car[] cars = carBookingService.viewAllAllAvailableCars();
+                  Car[] cars = carBookingService.viewAllAvailableCars();
                   for (Car car : cars)
                       System.out.println(car);
               }
@@ -99,20 +94,6 @@ public class Main {
           System.out.println(e.getMessage());
       }}
 
-    private static boolean invalidStartAndEnd(LocalDate start, LocalDate end) {
-        boolean isInPast = start.isBefore(LocalDate.now()) || end.isBefore(LocalDate.now());
-        if (isInPast)
-            System.out.println("input is in the past");
-        return isInPast;
-    }
-
-    private static boolean isValidBookingPeriod(LocalDate start, LocalDate end) {
-        if (!start.isBefore(end) && !invalidStartAndEnd(start, end)) {
-            System.out.println("The start date cannot be in the past or after the end date.");
-            return false;
-        }
-        return true;
-    }
     private static UUID readUUIDFromUser(String text) {
         UUID userInput;
         try {

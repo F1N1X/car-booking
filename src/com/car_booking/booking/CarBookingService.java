@@ -2,8 +2,7 @@ package booking;
 
 import car.Car;
 import car.CarService;
-import exceptions.EmptyBookingException;
-import exceptions.NoBookingFoundException;
+import exceptions.*;
 import user.User;
 import user.UserService;
 
@@ -31,11 +30,14 @@ public class CarBookingService {
 
     public void bookCar(UUID userId, String registerNumber, LocalDate startDate, LocalDate endDate) {
 
-           if (!userExist(userId) || existingRegNumber(registerNumber))
-               throw new IllegalArgumentException("user or register number not exist");
+            if (!isValidBookingPeriod(startDate, endDate)) throw new InvalidBookingPeriodException("invalid booking period");
 
-            User user = userService.getUserByID(userId);
-            Car car = carService.getCarByRegistrationNumber(registerNumber);
+            User user = userService.getUserByID(userId)
+                    .orElseThrow( () -> new NoUserFoundException("No user found with id: " + userId));
+            Car car = carService.getCarByRegistrationNumber(registerNumber)
+                    .orElseThrow( () -> new NoCarFoundException("No car found with registration-number: " + registerNumber));
+
+            if (carBookingDao.isCarBooked(car)) throw new CarAlreadyBookedException("Car is not available");
 
             CarBooking booking = new CarBooking(
                     calculatePrice(startDate, endDate, car.getRentalPricePerDay()),
@@ -48,38 +50,90 @@ public class CarBookingService {
             carBookingDao.addBooking(booking);
         }
 
+    private static boolean isValidBookingPeriod(LocalDate start, LocalDate end) {
+        if (start.isBefore(LocalDate.now()) || end.isBefore(LocalDate.now()))
+            return false;
 
-    private boolean userExist(UUID userId) {
-        return userService.checkUserExist(userId);
+        return start.isBefore(end);
     }
 
-    private boolean existingRegNumber(String regNumber) {
-        return carService.regNumberExisting(regNumber);
+    public void deleteBooking(UUID bookingId){
+        if (!carBookingDao.deleteBooking(bookingId))
+            throw new NoBookingFoundException("no booking found with id: " + bookingId);
     }
 
-    public void deleteBooking(UUID bookingId) throws NoBookingFoundException {
-        carBookingDao.deleteBooking(bookingId);
+    public User[] viewAllUserBookingCars(){
+        User[] allUserBookedCars = carBookingDao.getAllUserBookedCars();
+        if (allUserBookedCars.length == 0)
+            throw new NoUserBookedCarException("No user booked cars");
+        return allUserBookedCars;
     }
 
-    public User[] viewAllUserBookingCars() throws EmptyBookingException{
-            return carBookingDao.getAllUserBookedCars();
+    public CarBooking[] viewAllBookings() {
+        CarBooking[] allBookings = carBookingDao.getAllBookings();
+        if (allBookings.length == 0)
+            throw new NoBookingFoundException("no booking available");
+        return allBookings;
     }
 
-    public CarBooking[] viewAllBookings() throws EmptyBookingException{
-        return carBookingDao.getAllBookings();
-    }
-
-    public Car[] viewAllAllAvailableCars() {
+    public Car[] viewAllAvailableCars() {
         Car[] allCars = carService.getAllCars();
-        return carBookingDao.getAllBookedCars(allCars);
+        if (allCars.length == 0)
+            throw new NoCarFoundException("no cars available");
+
+        Car[] availableCars = filterAvailableCars(allCars, false);
+
+        if (availableCars.length == 0)
+            throw new NoAvaibleCarsException("no cars available for booking");
+        return availableCars;
     }
 
     public Car[] viewAllAvailableElectricCars() {
         Car[] allCars = carService.getAllCars();
-        return carBookingDao.getAllBookedCars(allCars);
+        if (allCars.length == 0)
+            throw new NoCarFoundException("no cars available");
+
+        Car[] availableCars = filterAvailableCars(allCars, true);
+
+        if (availableCars.length == 0)
+            throw new NoAvaibleCarsException("no cars available for booking");
+        return availableCars;
     }
 
     public User[] viewAllUsers() {
         return userService.getAllUsers();
+    }
+
+    private Car[] filterAvailableCars(Car[] cars, boolean electricOnly) {
+        int count = 0;
+
+        for (Car car : cars) {
+            if (carBookingDao.isCarBooked(car)) {
+                continue;
+            }
+
+            if (electricOnly && !car.isElectric()) {
+                continue;
+            }
+
+            count++;
+        }
+
+        Car[] result = new Car[count];
+        int index = 0;
+
+        for (Car car : cars) {
+            if (carBookingDao.isCarBooked(car)) {
+                continue;
+            }
+
+            if (electricOnly && !car.isElectric()) {
+                continue;
+            }
+
+            result[index++] = car;
+        }
+
+        return result;
     }
 }
