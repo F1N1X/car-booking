@@ -4,8 +4,8 @@ import java.util.UUID;
 
 public class User {
 
-    private final UUID id;
-    private final String name;
+    private UUID id;
+    private String name;
 
     public User(String name) {
         this.name = name;

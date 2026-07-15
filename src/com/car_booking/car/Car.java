@@ -5,11 +5,11 @@ import java.util.Objects;
 import java.util.UUID;
 
 public class Car {
-    private final UUID id;
-    private final String regNumber;
-    private final BigDecimal rentalPricePerDay;
-    private final Brand brand;
-    private final boolean isElectric;
+    private UUID id;
+    private String regNumber;
+    private BigDecimal rentalPricePerDay;
+    private Brand brand;
+    private boolean isElectric;
 
     public Car(String regNumber,
                BigDecimal rentalPricePerDay,

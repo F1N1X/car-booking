@@ -1,10 +1,7 @@
 package car;
 
-import exceptions.NoCarFoundException;
-
 import java.math.BigDecimal;
 import java.util.Optional;
-import java.util.UUID;
 
 public class CarDAO {
     private static final Car[] cars;
@@ -24,15 +21,6 @@ public class CarDAO {
                         new Car("BN-ST-1010", new BigDecimal("64.99"), Brand.KIA, true),
                 };
     }
-
-    public Optional<Car> getCarById(UUID carId) {
-        for (Car car : cars)
-            if (car.getId().compareTo(carId) == 0)
-                return Optional.of(car);
-
-        return Optional.empty();
-    }
-
 
     public Optional<Car> getCarByRegistrationNumber(String number) {
         for (Car car : cars)
