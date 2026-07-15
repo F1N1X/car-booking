@@ -62,7 +62,7 @@ public class CarBookingService {
             throw new NoBookingFoundException("no booking found with id: " + bookingId);
     }
 
-    public User[] viewAllUserBookingCars(){
+    public User[] viewAllUsersWithBookings(){
         User[] allUserBookedCars = carBookingDao.getAllUserBookedCars();
         if (allUserBookedCars.length == 0)
             throw new NoUserBookedCarException("No user booked cars");
@@ -84,7 +84,7 @@ public class CarBookingService {
         Car[] availableCars = filterAvailableCars(allCars, false);
 
         if (availableCars.length == 0)
-            throw new NoAvaibleCarsException("no cars available for booking");
+            throw new NoAvailableCarsException("no cars available for booking");
         return availableCars;
     }
 
@@ -96,7 +96,7 @@ public class CarBookingService {
         Car[] availableCars = filterAvailableCars(allCars, true);
 
         if (availableCars.length == 0)
-            throw new NoAvaibleCarsException("no cars available for booking");
+            throw new NoAvailableCarsException("no cars available for booking");
         return availableCars;
     }
 

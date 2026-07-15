@@ -63,7 +63,7 @@ public class Main {
                   System.out.println("Booking deleted with id: "+bookingId);
               }
               case 3 -> {
-                  User[] users = carBookingService.viewAllUserBookingCars();
+                  User[] users = carBookingService.viewAllUsersWithBookings();
                   for (User user : users)
                       System.out.println(user);
               }
@@ -80,7 +80,6 @@ public class Main {
               case 6 -> {
                   Car[] cars = carBookingService.viewAllAvailableElectricCars();
                   for (Car car : cars)
-                      if (car.isElectric())
                           System.out.println(car);
               }
               case 7 -> {
@@ -107,28 +106,27 @@ public class Main {
     }
 
     private static String readString(String text) {
-        String input;
-        try {
+        while (true) {
             System.out.println(text);
-            input = scanner.next();
-        } catch (IllegalArgumentException e) {
-            System.out.println("Enter valid String");
-            return readString(text);
+
+            String input = scanner.nextLine().trim();
+
+            if (!input.isEmpty()) {
+                return input;
+            }
+            System.out.println("Enter a valid String");
         }
-        return input;
     }
 
     private static LocalDate readDate(String text) {
-        LocalDate inputDate;
-        try {
-            System.out.println(text);
-            inputDate = LocalDate.parse(scanner.next());
-
-        } catch (DateTimeParseException | IllegalArgumentException e) {
-            System.out.println("invalid format for LocalDate");
-            return readDate(text);
+        while (true) {
+            try {
+                System.out.println(text);
+                return LocalDate.parse(scanner.next());
+            } catch (DateTimeParseException e) {
+                System.out.println("Invalid format for LocalDate");
+            }
         }
-        return inputDate;
     }
 }
 
