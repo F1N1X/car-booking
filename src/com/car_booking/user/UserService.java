@@ -3,12 +3,12 @@ package user;
 import java.util.Optional;
 import java.util.UUID;
 
-public class UserService {
+public class UserService{
 
     private final UserDAO userDao;
 
     public UserService() {
-       userDao = new UserDAO();
+       userDao = new StaticUserDAO();
     }
 
     public Optional<User> getUserByID(UUID userId) {

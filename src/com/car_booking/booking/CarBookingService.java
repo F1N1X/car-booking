@@ -15,12 +15,12 @@ public class CarBookingService {
 
     private final CarService carService;
     private final UserService userService;
-    private final CarBookingDao carBookingDao;
+    private final CarBookingDAO carBookingDao;
 
     public CarBookingService() {
         carService = new CarService();
         userService = new UserService();
-        carBookingDao = new CarBookingDao();
+        carBookingDao = new CarBookingWithArray();
     }
 
     private BigDecimal calculatePrice(LocalDate start, LocalDate end, BigDecimal rentalPricePerDay) {

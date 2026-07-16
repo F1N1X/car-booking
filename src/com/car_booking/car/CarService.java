@@ -8,7 +8,7 @@ public class CarService {
     private final CarDAO carDao;
 
     public CarService() {
-        carDao = new CarDAO();
+        carDao = new StaticCarDAO();
     }
 
     public Optional<Car> getCarByRegistrationNumber(String number) {

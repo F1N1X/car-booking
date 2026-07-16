@@ -5,7 +5,7 @@ import user.User;
 
 import java.util.*;
 
-public class CarBookingDao {
+public class CarBookingWithArray implements CarBookingDAO{
 
     private static CarBooking[] carBookings;
 
@@ -13,6 +13,7 @@ public class CarBookingDao {
         carBookings = new CarBooking[3];
     }
 
+    @Override
     public void addBooking(CarBooking carBooking) {
         int index = findInsertPoint();
 
@@ -23,6 +24,7 @@ public class CarBookingDao {
         carBookings[index] = carBooking;
     }
 
+    @Override
     public boolean isCarBooked(Car car) {
         for (CarBooking booking : carBookings) {
             if (booking == null) continue;
@@ -55,12 +57,14 @@ public class CarBookingDao {
         return count;
     }
 
-
+    @Override
     public CarBooking[] getAllBookings() {
         if (countBooking() == 0) return new CarBooking[0];
         return filterCarBookings();
     }
 
+
+    @Override
     public User[] getAllUserBookedCars() {
 
         int findBookings = countBooking();
@@ -76,6 +80,7 @@ public class CarBookingDao {
         return userBookedCars;
     }
 
+    @Override
     public boolean deleteBooking(UUID bookingId) {
             OptionalInt indexForDelete = findBookingIndex(bookingId);
 
