@@ -5,10 +5,10 @@ import java.util.Optional;
 
 public class CarService {
 
-    private final CarDAO carDao;
+    private final CarArrayDataAccessService carDao;
 
     public CarService() {
-        carDao = new CarDAO();
+        carDao = new CarArrayDataAccessService();
     }
 
     public Optional<Car> getCarByRegistrationNumber(String number) {
@@ -16,6 +16,6 @@ public class CarService {
     }
 
     public Car[] getAllCars() {
-        return carDao.getAllCars();
+        return carDao.getCars();
     }
 }

@@ -15,12 +15,12 @@ public class CarBookingService {
 
     private final CarService carService;
     private final UserService userService;
-    private final CarBookingDao carBookingDao;
+    private final CarBookingArrayDataAccessService carBookingDao;
 
     public CarBookingService() {
         carService = new CarService();
         userService = new UserService();
-        carBookingDao = new CarBookingDao();
+        carBookingDao = new CarBookingArrayDataAccessService();
     }
 
     private BigDecimal calculatePrice(LocalDate start, LocalDate end, BigDecimal rentalPricePerDay) {
@@ -70,7 +70,7 @@ public class CarBookingService {
     }
 
     public CarBooking[] viewAllBookings() {
-        CarBooking[] allBookings = carBookingDao.getAllBookings();
+        CarBooking[] allBookings = carBookingDao.getBookings();
         if (allBookings.length == 0)
             throw new NoBookingFoundException("no booking available");
         return allBookings;
