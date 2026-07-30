@@ -5,10 +5,10 @@ import java.util.UUID;
 
 public class UserService {
 
-    private final UserDAO userDao;
+    private final UserArrayDataAccessService userDao;
 
     public UserService() {
-       userDao = new UserDAO();
+       userDao = new UserArrayDataAccessService();
     }
 
     public Optional<User> getUserByID(UUID userId) {
