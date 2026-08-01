@@ -1,5 +1,7 @@
 package booking;
 
+import car.Car;
+
 import java.util.UUID;
 
 public interface CarBookingDao {
@@ -7,4 +9,6 @@ public interface CarBookingDao {
     CarBooking findBookingById(UUID bookingId);
     void saveBooking(CarBooking booking);
     void deleteBooking(UUID bookingId);
+
+    boolean isCarBooked(Car car);
 }
