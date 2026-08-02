@@ -62,11 +62,11 @@ public class CarBookingService {
     }
 
     public User[] viewAllUsersWithBookings(){
-        CarBooking[] carbookings = carBookingDao.getBookings();
-        User[] userBookedCars = new User[carbookings.length];
+        CarBooking[] bookings = carBookingDao.getBookings();
+        User[] userBookedCars = new User[bookings.length];
 
-        for (int i = 0; i < carbookings.length; i++)
-            userBookedCars[i] = carbookings[i].getUser();
+        for (int i = 0; i < bookings.length; i++)
+            userBookedCars[i] = bookings[i].getUser();
 
 
         if (userBookedCars.length == 0)

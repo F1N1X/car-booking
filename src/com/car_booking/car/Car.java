@@ -1,5 +1,6 @@
 package car;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Objects;
@@ -7,6 +8,7 @@ import java.util.UUID;
 
 public class Car implements Serializable {
 
+    @Serial
     private static final long serialVersionUID = 1L;
     private UUID id;
     private String regNumber;

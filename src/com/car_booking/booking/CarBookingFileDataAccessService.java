@@ -126,7 +126,7 @@ public class CarBookingFileDataAccessService implements CarBookingDao{
 
         CarBooking[] carBookings = new CarBooking[bookingCount-1];
 
-        carBookings = readBookingExcludingId(bookingId, carBookings);
+        readBookingExcludingId(bookingId, carBookings);
 
         try (ObjectOutputStream outputStream =
                 new ObjectOutputStream(new FileOutputStream(filePath))) {
@@ -161,7 +161,6 @@ public class CarBookingFileDataAccessService implements CarBookingDao{
         }
     }
 
-
     @Override
     public boolean isCarBooked(Car car) {
 
@@ -177,9 +176,12 @@ public class CarBookingFileDataAccessService implements CarBookingDao{
                      new ObjectInputStream(new FileInputStream(file))) {
 
             CarBooking booking;
-
             while (true) {
                 booking = (CarBooking) objectInputStream.readObject();
+                System.out.println(
+                        "Car serialisierbar: "
+                                + (booking.getCar() instanceof Serializable)
+                );
                 if (booking.getCar().getId().equals(car.getId()))
                     return true;
             }
