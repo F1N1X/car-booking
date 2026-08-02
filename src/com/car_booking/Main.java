@@ -138,7 +138,7 @@ public class Main {
         while (true) {
             System.out.println(text);
 
-            String input = scanner.nextLine().trim();
+            String input = scanner.next().trim();
 
             if (!input.isEmpty()) {
                 return input;
