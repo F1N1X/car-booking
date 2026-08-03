@@ -4,9 +4,17 @@
 // TODO 3. implement https://amigoscode.com/learn/java-cli-build/lectures/3a83ecf3-e837-4ae5-85a8-f8ae3f60f7f5
 
 import booking.CarBooking;
+import booking.CarBookingDao;
+import booking.CarBookingFileDataAccessService;
 import booking.CarBookingService;
 import car.Car;
+import car.CarArrayDataAccessService;
+import car.CarDao;
+import car.CarService;
 import user.User;
+import user.UserArrayDataAccessService;
+import user.UserDao;
+import user.UserService;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
@@ -15,10 +23,32 @@ import java.util.UUID;
 
 public class Main {
 
-    private static final CarBookingService carBookingService = new CarBookingService();
+
     private static final Scanner scanner = new Scanner(System.in);
+    private static UserService userService;
+    private static UserDao userDao;
+    private static CarDao carDao;
+    private static CarBookingDao carBookingDao;
+    private static CarBookingService carBookingService;
+
+
+
+
+
 
     public static void main(String[] args) {
+        // Swap booking implementation here
+        carBookingDao = new CarBookingFileDataAccessService("bookings.dat");
+        // CarBookingDao carBookingDao = new CarBookingArrayDataAccessService();
+        carDao = new CarArrayDataAccessService();
+        CarService carService = new CarService(carDao);
+        userDao = new UserArrayDataAccessService();
+        userService = new UserService(userDao);
+        carBookingService = new CarBookingService(
+               carService, userService, carBookingDao
+        );
+
+
         int userInput;
 
         while (true) {
@@ -108,7 +138,7 @@ public class Main {
         while (true) {
             System.out.println(text);
 
-            String input = scanner.nextLine().trim();
+            String input = scanner.next().trim();
 
             if (!input.isEmpty()) {
                 return input;

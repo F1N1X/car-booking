@@ -3,7 +3,7 @@ package user;
 import java.util.Optional;
 import java.util.UUID;
 
-public class UserDAO {
+public class UserArrayDataAccessService implements UserDao{
     private static final User[] users;
 
     static {
@@ -29,5 +29,18 @@ public class UserDAO {
 
     public User[] getAllUsers() {
         return users;
+    }
+
+    @Override
+    public User[] getUsers() {
+        return users;
+    }
+
+    @Override
+    public User findUserById(UUID id) {
+        for (var user : users)
+            if (user.getId().compareTo(id) == 0)
+                return user;
+        return null;
     }
 }

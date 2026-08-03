@@ -17,10 +17,10 @@ public class CarBookingService {
     private final UserService userService;
     private final CarBookingDao carBookingDao;
 
-    public CarBookingService() {
-        carService = new CarService();
-        userService = new UserService();
-        carBookingDao = new CarBookingDao();
+    public CarBookingService(CarService carService, UserService userService, CarBookingDao carBookingDao) {
+        this.carService = carService;
+        this.userService = userService;
+        this.carBookingDao = carBookingDao;
     }
 
     private BigDecimal calculatePrice(LocalDate start, LocalDate end, BigDecimal rentalPricePerDay) {
@@ -47,7 +47,7 @@ public class CarBookingService {
                     user,
                     BookingStatus.ACTIVE);
 
-            carBookingDao.addBooking(booking);
+            carBookingDao.saveBooking(booking);
         }
 
     private static boolean isValidBookingPeriod(LocalDate start, LocalDate end) {
@@ -58,19 +58,24 @@ public class CarBookingService {
     }
 
     public void deleteBooking(UUID bookingId){
-        if (!carBookingDao.deleteBooking(bookingId))
-            throw new NoBookingFoundException("no booking found with id: " + bookingId);
+        carBookingDao.deleteBooking(bookingId);
     }
 
     public User[] viewAllUsersWithBookings(){
-        User[] allUserBookedCars = carBookingDao.getAllUserBookedCars();
-        if (allUserBookedCars.length == 0)
+        CarBooking[] bookings = carBookingDao.getBookings();
+        User[] userBookedCars = new User[bookings.length];
+
+        for (int i = 0; i < bookings.length; i++)
+            userBookedCars[i] = bookings[i].getUser();
+
+
+        if (userBookedCars.length == 0)
             throw new NoUserBookedCarException("No user booked cars");
-        return allUserBookedCars;
+        return userBookedCars;
     }
 
     public CarBooking[] viewAllBookings() {
-        CarBooking[] allBookings = carBookingDao.getAllBookings();
+        CarBooking[] allBookings = carBookingDao.getBookings();
         if (allBookings.length == 0)
             throw new NoBookingFoundException("no booking available");
         return allBookings;
@@ -111,11 +116,9 @@ public class CarBookingService {
             if (carBookingDao.isCarBooked(car)) {
                 continue;
             }
-
             if (electricOnly && !car.isElectric()) {
                 continue;
             }
-
             count++;
         }
 
@@ -133,7 +136,6 @@ public class CarBookingService {
 
             result[index++] = car;
         }
-
         return result;
     }
 }
