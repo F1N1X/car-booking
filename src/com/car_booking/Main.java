@@ -93,27 +93,27 @@ public class Main {
                   System.out.println("Booking deleted with id: "+bookingId);
               }
               case 3 -> {
-                  User[] users = carBookingService.viewAllUsersWithBookings();
+                  var users = carBookingService.viewAllUsersWithBookings();
                   for (User user : users)
                       System.out.println(user);
               }
               case 4 -> {
-                  CarBooking[] carBookings = carBookingService.viewAllBookings();
+                  var carBookings = carBookingService.viewAllBookings();
                   for (CarBooking booking : carBookings)
                       System.out.println(booking);
               }
               case 5 -> {
-                  Car[] cars = carBookingService.viewAllAvailableCars();
+                  var cars = carBookingService.viewAllAvailableCars();
                   for (Car car : cars)
                       System.out.println(car);
               }
               case 6 -> {
-                  Car[] cars = carBookingService.viewAllAvailableElectricCars();
+                  var cars = carBookingService.viewAllAvailableElectricCars();
                   for (Car car : cars)
                           System.out.println(car);
               }
               case 7 -> {
-                  User[] users = carBookingService.viewAllUsers();
+                  var users = carBookingService.viewAllUsers();
                   for (User user : users)
                       System.out.println(user);
               }
