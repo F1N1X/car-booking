@@ -13,7 +13,7 @@ public class UserService {
     }
 
     public Optional<User> getUserByID(UUID userId) {
-        return Optional.ofNullable(userDao.findUserById(userId));
+        return userDao.findUserById(userId);
     }
 
     public List<User> getAllUsers() {

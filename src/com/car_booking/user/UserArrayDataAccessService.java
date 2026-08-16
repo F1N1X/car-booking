@@ -20,10 +20,12 @@ public class UserArrayDataAccessService implements UserDao{
                         new User("Laura")));
     }
 
-    public Optional<User> getUserById(UUID id) {
-        for (User user : users)
+    @Override
+    public Optional<User> findUserById(UUID id) {
+        for (User user : users) {
             if (user.getId().equals(id))
                 return Optional.of(user);
+        }
         return Optional.empty();
     }
 
@@ -32,11 +34,5 @@ public class UserArrayDataAccessService implements UserDao{
         return users;
     }
 
-    @Override
-    public User findUserById(UUID id) {
-        for (var user : users)
-            if (user.getId().equals(id))
-                return user;
-        return null;
-    }
+
 }

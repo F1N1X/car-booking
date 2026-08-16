@@ -3,10 +3,7 @@
 // TODO 2. create a package with your name. i.e com.franco and move this file inside the new package
 // TODO 3. implement https://amigoscode.com/learn/java-cli-build/lectures/3a83ecf3-e837-4ae5-85a8-f8ae3f60f7f5
 
-import booking.CarBooking;
-import booking.CarBookingDao;
-import booking.CarBookingFileDataAccessService;
-import booking.CarBookingService;
+import booking.*;
 import car.Car;
 import car.CarArrayDataAccessService;
 import car.CarDao;
@@ -28,7 +25,6 @@ public class Main {
     private static UserService userService;
     private static UserDao userDao;
     private static CarDao carDao;
-    private static CarBookingDao carBookingDao;
     private static CarBookingService carBookingService;
 
 
@@ -38,8 +34,8 @@ public class Main {
 
     public static void main(String[] args) {
         // Swap booking implementation here
-        carBookingDao = new CarBookingFileDataAccessService("bookings.dat");
-        // CarBookingDao carBookingDao = new CarBookingArrayDataAccessService();
+        //carBookingDao = new CarBookingFileDataAccessService("bookings.dat");
+        CarBookingDao carBookingDao = new CarBookingArrayDataAccessService();
         carDao = new CarArrayDataAccessService();
         CarService carService = new CarService(carDao);
         userDao = new UserArrayDataAccessService();

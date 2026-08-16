@@ -14,7 +14,8 @@ public class CarBookingArrayDataAccessService implements CarBookingDao{
     }
 
     public boolean isCarBooked(Car car) {
-        return carBookings.contains(car);
+        return carBookings.stream()
+                .anyMatch(c -> c.getCar().equals(car));
     }
 
 
@@ -37,7 +38,7 @@ public class CarBookingArrayDataAccessService implements CarBookingDao{
 
     public List<User> getAllUserBookedCars() {
         int findBookings = carBookings.size();
-        if (findBookings == 0) return new ArrayList<User>();
+        if (findBookings == 0) return new ArrayList<>();
 
         List<User> userBookedCars = new ArrayList<User>();
         for (int i = 0; i < carBookings.size(); i++)
