@@ -1,8 +1,10 @@
 package user;
 
+import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 public interface UserDao {
-    User[] getUsers();
-    User findUserById(UUID id);
+    List<User> getUsers();
+    Optional<User> findUserById(UUID id);
 }

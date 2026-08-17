@@ -3,10 +3,7 @@
 // TODO 2. create a package with your name. i.e com.franco and move this file inside the new package
 // TODO 3. implement https://amigoscode.com/learn/java-cli-build/lectures/3a83ecf3-e837-4ae5-85a8-f8ae3f60f7f5
 
-import booking.CarBooking;
-import booking.CarBookingDao;
-import booking.CarBookingFileDataAccessService;
-import booking.CarBookingService;
+import booking.*;
 import car.Car;
 import car.CarArrayDataAccessService;
 import car.CarDao;
@@ -28,7 +25,6 @@ public class Main {
     private static UserService userService;
     private static UserDao userDao;
     private static CarDao carDao;
-    private static CarBookingDao carBookingDao;
     private static CarBookingService carBookingService;
 
 
@@ -38,8 +34,8 @@ public class Main {
 
     public static void main(String[] args) {
         // Swap booking implementation here
-        carBookingDao = new CarBookingFileDataAccessService("bookings.dat");
-        // CarBookingDao carBookingDao = new CarBookingArrayDataAccessService();
+        //carBookingDao = new CarBookingFileDataAccessService("bookings.dat");
+        CarBookingDao carBookingDao = new CarBookingArrayDataAccessService();
         carDao = new CarArrayDataAccessService();
         CarService carService = new CarService(carDao);
         userDao = new UserArrayDataAccessService();
@@ -93,27 +89,27 @@ public class Main {
                   System.out.println("Booking deleted with id: "+bookingId);
               }
               case 3 -> {
-                  User[] users = carBookingService.viewAllUsersWithBookings();
+                  var users = carBookingService.viewAllUsersWithBookings();
                   for (User user : users)
                       System.out.println(user);
               }
               case 4 -> {
-                  CarBooking[] carBookings = carBookingService.viewAllBookings();
+                  var carBookings = carBookingService.viewAllBookings();
                   for (CarBooking booking : carBookings)
                       System.out.println(booking);
               }
               case 5 -> {
-                  Car[] cars = carBookingService.viewAllAvailableCars();
+                  var cars = carBookingService.viewAllAvailableCars();
                   for (Car car : cars)
                       System.out.println(car);
               }
               case 6 -> {
-                  Car[] cars = carBookingService.viewAllAvailableElectricCars();
+                  var cars = carBookingService.viewAllAvailableElectricCars();
                   for (Car car : cars)
                           System.out.println(car);
               }
               case 7 -> {
-                  User[] users = carBookingService.viewAllUsers();
+                  var users = carBookingService.viewAllUsers();
                   for (User user : users)
                       System.out.println(user);
               }

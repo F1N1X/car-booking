@@ -1,5 +1,6 @@
 package user;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -12,10 +13,10 @@ public class UserService {
     }
 
     public Optional<User> getUserByID(UUID userId) {
-        return Optional.ofNullable(userDao.findUserById(userId));
+        return userDao.findUserById(userId);
     }
 
-    public User[] getAllUsers() {
+    public List<User> getAllUsers() {
         return userDao.getUsers();
     }
 }

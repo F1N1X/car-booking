@@ -9,6 +9,8 @@ import user.UserService;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 public class CarBookingService {
@@ -61,69 +63,58 @@ public class CarBookingService {
         carBookingDao.deleteBooking(bookingId);
     }
 
-    public User[] viewAllUsersWithBookings(){
-        CarBooking[] bookings = carBookingDao.getBookings();
-        User[] userBookedCars = new User[bookings.length];
+    public List<User> viewAllUsersWithBookings(){
+        List<CarBooking> bookings = carBookingDao.getBookings();
 
-        for (int i = 0; i < bookings.length; i++)
-            userBookedCars[i] = bookings[i].getUser();
-
-
-        if (userBookedCars.length == 0)
+        if (bookings.isEmpty())
             throw new NoUserBookedCarException("No user booked cars");
+
+        List<User> userBookedCars = new ArrayList<>();
+
+        for (CarBooking booking : bookings)
+            userBookedCars.add(booking.getUser());
+
         return userBookedCars;
     }
 
-    public CarBooking[] viewAllBookings() {
-        CarBooking[] allBookings = carBookingDao.getBookings();
-        if (allBookings.length == 0)
+    public List<CarBooking> viewAllBookings() {
+        List<CarBooking> allBookings = carBookingDao.getBookings();
+        if (allBookings.isEmpty())
             throw new NoBookingFoundException("no booking available");
         return allBookings;
     }
 
-    public Car[] viewAllAvailableCars() {
-        Car[] allCars = carService.getAllCars();
-        if (allCars.length == 0)
+    public List<Car> viewAllAvailableCars() {
+        List<Car> allCars = carService.getAllCars();
+        if (allCars.isEmpty())
             throw new NoCarFoundException("no cars available");
 
-        Car[] availableCars = filterAvailableCars(allCars, false);
+        List<Car> availableCars = filterAvailableCars(allCars, false);
 
-        if (availableCars.length == 0)
+        if (availableCars.isEmpty())
             throw new NoAvailableCarsException("no cars available for booking");
         return availableCars;
     }
 
-    public Car[] viewAllAvailableElectricCars() {
-        Car[] allCars = carService.getAllCars();
-        if (allCars.length == 0)
+    public List<Car> viewAllAvailableElectricCars() {
+        List<Car> allCars = carService.getAllCars();
+        if (allCars.isEmpty())
             throw new NoCarFoundException("no cars available");
 
-        Car[] availableCars = filterAvailableCars(allCars, true);
+        List<Car> availableCars = filterAvailableCars(allCars, true);
 
-        if (availableCars.length == 0)
+        if (availableCars.isEmpty())
             throw new NoAvailableCarsException("no cars available for booking");
         return availableCars;
     }
 
-    public User[] viewAllUsers() {
+    public List<User> viewAllUsers() {
         return userService.getAllUsers();
     }
 
-    private Car[] filterAvailableCars(Car[] cars, boolean electricOnly) {
-        int count = 0;
+    private List<Car> filterAvailableCars(List<Car> cars, boolean electricOnly) {
 
-        for (Car car : cars) {
-            if (carBookingDao.isCarBooked(car)) {
-                continue;
-            }
-            if (electricOnly && !car.isElectric()) {
-                continue;
-            }
-            count++;
-        }
-
-        Car[] result = new Car[count];
-        int index = 0;
+        List<Car> result = new ArrayList<>();
 
         for (Car car : cars) {
             if (carBookingDao.isCarBooked(car)) {
@@ -134,7 +125,7 @@ public class CarBookingService {
                 continue;
             }
 
-            result[index++] = car;
+            result.add(car);
         }
         return result;
     }
