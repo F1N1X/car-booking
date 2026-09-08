@@ -4,6 +4,7 @@ import car.Car;
 import user.User;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class CarBookingArrayDataAccessService implements CarBookingDao{
 
@@ -25,10 +26,10 @@ public class CarBookingArrayDataAccessService implements CarBookingDao{
 
     @Override
     public CarBooking findBookingById(UUID bookingId) {
-        for (var carBooking : carBookings)
-            if (carBooking.getId().equals(bookingId))
-                return carBooking;
-        return null;
+        return carBookings.stream()
+                .filter( b -> b.getId().equals(bookingId))
+                .findFirst()
+                .orElse(null);
     }
 
     @Override
@@ -40,11 +41,9 @@ public class CarBookingArrayDataAccessService implements CarBookingDao{
         int findBookings = carBookings.size();
         if (findBookings == 0) return new ArrayList<>();
 
-        List<User> userBookedCars = new ArrayList<User>();
-        for (int i = 0; i < carBookings.size(); i++)
-            userBookedCars.add(carBookings.get(i).getUser());
-
-        return userBookedCars;
+        return carBookings.stream()
+                .map(CarBooking::getUser)
+                .toList();
     }
 
     public void deleteBooking(UUID bookingId) {
