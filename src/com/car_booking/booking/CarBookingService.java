@@ -69,12 +69,9 @@ public class CarBookingService {
         if (bookings.isEmpty())
             throw new NoUserBookedCarException("No user booked cars");
 
-        List<User> userBookedCars = new ArrayList<>();
-
-        for (CarBooking booking : bookings)
-            userBookedCars.add(booking.getUser());
-
-        return userBookedCars;
+        return bookings.stream()
+                .map(CarBooking::getUser)
+                .toList();
     }
 
     public List<CarBooking> viewAllBookings() {
@@ -113,20 +110,9 @@ public class CarBookingService {
     }
 
     private List<Car> filterAvailableCars(List<Car> cars, boolean electricOnly) {
-
-        List<Car> result = new ArrayList<>();
-
-        for (Car car : cars) {
-            if (carBookingDao.isCarBooked(car)) {
-                continue;
-            }
-
-            if (electricOnly && !car.isElectric()) {
-                continue;
-            }
-
-            result.add(car);
-        }
-        return result;
+        return cars.stream()
+                .filter(car -> !carBookingDao.isCarBooked(car))
+                .filter(car -> !electricOnly || car.isElectric())
+                .toList();
     }
 }
