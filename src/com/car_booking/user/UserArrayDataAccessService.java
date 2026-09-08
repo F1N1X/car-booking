@@ -21,12 +21,11 @@ public class UserArrayDataAccessService implements UserDao{
     }
 
     @Override
-    public Optional<User> findUserById(UUID id) {
-        for (User user : users) {
-            if (user.getId().equals(id))
-                return Optional.of(user);
-        }
-        return Optional.empty();
+    public Optional<User> findUserById(UUID userId) {
+       return users.stream()
+                .filter(u -> u.getId().equals(userId))
+                .findFirst()
+                .or(Optional::empty);
     }
 
     @Override
