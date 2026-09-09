@@ -24,11 +24,10 @@ public class CarArrayDataAccessService implements CarDao{
     }
 
     public Optional<Car> getCarByRegistrationNumber(String number) {
-        for (Car car : cars)
-            if (car.getRegNumber().equals(number))
-                return Optional.of(car);
-
-        return Optional.empty();
+        return cars.stream()
+                .filter(c -> c.getRegNumber().equals(number))
+                .findFirst()
+                .or(Optional::empty);
     }
 
     public List<Car> getCars() {
@@ -37,10 +36,10 @@ public class CarArrayDataAccessService implements CarDao{
 
     @Override
     public Car findCarById(UUID id) {
-        for (var car : cars)
-            if (car.getId().equals(id))
-                return car;
-        return null;
+        return cars.stream()
+                .filter(c -> c.getId().equals(id))
+                .findAny()
+                .orElse(null);
     }
 
 }
