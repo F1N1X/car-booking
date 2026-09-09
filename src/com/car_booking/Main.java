@@ -8,6 +8,7 @@ import car.Car;
 import car.CarArrayDataAccessService;
 import car.CarDao;
 import car.CarService;
+import com.github.javafaker.Faker;
 import user.User;
 import user.UserArrayDataAccessService;
 import user.UserDao;
@@ -33,6 +34,10 @@ public class Main {
 
 
     public static void main(String[] args) {
+
+        Faker faker = new Faker();
+        System.out.println(faker.name().firstName());
+
         // Swap booking implementation here
         //carBookingDao = new CarBookingFileDataAccessService("bookings.dat");
         CarBookingDao carBookingDao = new CarBookingArrayDataAccessService();
