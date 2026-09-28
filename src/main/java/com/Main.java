@@ -1,9 +1,9 @@
 package com;
-// TODO 1. create a new branch called initial-implementation
-// TODO 2. create a package with your name. i.e com.franco and move this file inside the new package
-// TODO 3. implement https://amigoscode.com/learn/java-cli-build/lectures/3a83ecf3-e837-4ae5-85a8-f8ae3f60f7f5
 
-import com.booking.*;
+import com.booking.CarBooking;
+import com.booking.CarBookingArrayDataAccessService;
+import com.booking.CarBookingDao;
+import com.booking.CarBookingService;
 import com.car.Car;
 import com.car.CarArrayDataAccessService;
 import com.car.CarDao;
@@ -21,38 +21,42 @@ import java.util.UUID;
 
 public class Main {
 
-
     private static final Scanner scanner = new Scanner(System.in);
+
     private static UserService userService;
     private static UserDao userDao;
     private static CarDao carDao;
     private static CarBookingService carBookingService;
 
-
-
-
-
-
     public static void main(String[] args) {
 
+        // Test für JavaFaker
         Faker faker = new Faker();
         System.out.println(faker.name().firstName());
 
-        // Swap com.booking implementation here
-        //carBookingDao = new CarBookingFileDataAccessService("bookings.dat");
-        CarBookingDao carBookingDao = new CarBookingArrayDataAccessService();
+        // Booking Implementation
+        // CarBookingDao carBookingDao =
+        //        new CarBookingFileDataAccessService("bookings.dat");
+
+        CarBookingDao carBookingDao =
+                new CarBookingArrayDataAccessService();
+
         carDao = new CarArrayDataAccessService();
         CarService carService = new CarService(carDao);
+
         userDao = new UserArrayDataAccessService();
         userService = new UserService(userDao);
-        carBookingService = new CarBookingService(
-               carService, userService, carBookingDao
-        );
 
+        carBookingService = new CarBookingService(
+                carService,
+                userService,
+                carBookingDao
+        );
 
         int userInput;
 
         while (true) {
+
             System.out.println("""
                     1 - Book Car
                     2 - Delete Booking
@@ -65,10 +69,17 @@ public class Main {
                     """);
 
             userInput = scanner.nextInt();
-            if (!isValid(userInput))
-                System.out.println("Please pick a number between 1 - 8");
-            else {
-                if (userInput == 8) return;
+
+            if (!isValid(userInput)) {
+                System.out.println(
+                        "Please pick a number between 1 - 8"
+                );
+            } else {
+
+                if (userInput == 8) {
+                    return;
+                }
+
                 booking(userInput);
             }
         }
@@ -78,88 +89,178 @@ public class Main {
         return userInput > 0 && userInput <= 8;
     }
 
-    private static void com.booking(int userChoice) {
-      try {
-          switch (userChoice) {
-              case 1 ->  {
-                  LocalDate startDate = readDate("Enter start date");
-                  LocalDate endDate = readDate("Enter endDate");
-                  UUID userId = readUUIDFromUser("Put the UUID from User");
-                  String registerNumber = readString("Enter Car register Number");
-                  carBookingService.bookCar(userId, registerNumber, startDate, endDate);
-              }
-              case 2 -> {
-                  UUID bookingId = readUUIDFromUser("Put the UUID from the Booking");
-                  carBookingService.deleteBooking(bookingId);
-                  System.out.println("Booking deleted with id: "+bookingId);
-              }
-              case 3 -> {
-                  var users = carBookingService.viewAllUsersWithBookings();
-                  for (User com.user : users)
-                      System.out.println(user);
-              }
-              case 4 -> {
-                  var carBookings = carBookingService.viewAllBookings();
-                  for (CarBooking com.booking : carBookings)
-                      System.out.println(booking);
-              }
-              case 5 -> {
-                  var cars = carBookingService.viewAllAvailableCars();
-                  for (Car com.car : cars)
-                      System.out.println(car);
-              }
-              case 6 -> {
-                  var cars = carBookingService.viewAllAvailableElectricCars();
-                  for (Car com.car : cars)
-                          System.out.println(car);
-              }
-              case 7 -> {
-                  var users = carBookingService.viewAllUsers();
-                  for (User com.user : users)
-                      System.out.println(user);
-              }
-              default -> throw new IllegalStateException("Unexpected value: " + userChoice);
-          }
-      } catch (RuntimeException e) {
-          System.out.println(e.getMessage());
-      }}
+    private static void booking(int userChoice) {
+
+        try {
+
+            switch (userChoice) {
+
+                case 1 -> {
+
+                    LocalDate startDate =
+                            readDate("Enter start date");
+
+                    LocalDate endDate =
+                            readDate("Enter end date");
+
+                    UUID userId =
+                            readUUIDFromUser(
+                                    "Put the UUID from User"
+                            );
+
+                    String registerNumber =
+                            readString(
+                                    "Enter Car register Number"
+                            );
+
+                    carBookingService.bookCar(
+                            userId,
+                            registerNumber,
+                            startDate,
+                            endDate
+                    );
+                }
+
+                case 2 -> {
+
+                    UUID bookingId =
+                            readUUIDFromUser(
+                                    "Put the UUID from the Booking"
+                            );
+
+                    carBookingService.deleteBooking(bookingId);
+
+                    System.out.println(
+                            "Booking deleted with id: "
+                                    + bookingId
+                    );
+                }
+
+                case 3 -> {
+
+                    var users =
+                            carBookingService
+                                    .viewAllUsersWithBookings();
+
+                    for (User user : users) {
+                        System.out.println(user);
+                    }
+                }
+
+                case 4 -> {
+
+                    var carBookings =
+                            carBookingService
+                                    .viewAllBookings();
+
+                    for (CarBooking booking : carBookings) {
+                        System.out.println(booking);
+                    }
+                }
+
+                case 5 -> {
+
+                    var cars =
+                            carBookingService
+                                    .viewAllAvailableCars();
+
+                    for (Car car : cars) {
+                        System.out.println(car);
+                    }
+                }
+
+                case 6 -> {
+
+                    var cars =
+                            carBookingService
+                                    .viewAllAvailableElectricCars();
+
+                    for (Car car : cars) {
+                        System.out.println(car);
+                    }
+                }
+
+                case 7 -> {
+
+                    var users =
+                            carBookingService
+                                    .viewAllUsers();
+
+                    for (User user : users) {
+                        System.out.println(user);
+                    }
+                }
+
+                default ->
+                        throw new IllegalStateException(
+                                "Unexpected value: "
+                                        + userChoice
+                        );
+            }
+
+        } catch (RuntimeException e) {
+            System.out.println(e.getMessage());
+        }
+    }
 
     private static UUID readUUIDFromUser(String text) {
+
         while (true) {
+
             try {
+
                 System.out.println(text);
-                return UUID.fromString(scanner.next());
+
+                return UUID.fromString(
+                        scanner.next()
+                );
+
             } catch (IllegalArgumentException e) {
-                System.out.println("Enter a valid UUID");
+
+                System.out.println(
+                        "Enter a valid UUID"
+                );
             }
         }
     }
 
     private static String readString(String text) {
+
         while (true) {
+
             System.out.println(text);
 
-            String input = scanner.next().trim();
+            String input =
+                    scanner.next().trim();
 
             if (!input.isEmpty()) {
                 return input;
             }
-            System.out.println("Enter a valid String");
+
+            System.out.println(
+                    "Enter a valid String"
+            );
         }
     }
 
     private static LocalDate readDate(String text) {
+
         while (true) {
+
             try {
+
                 System.out.println(text);
-                return LocalDate.parse(scanner.next());
+
+                return LocalDate.parse(
+                        scanner.next()
+                );
+
             } catch (DateTimeParseException e) {
-                System.out.println("Invalid format for LocalDate");
+
+                System.out.println(
+                        "Invalid format for LocalDate"
+                );
             }
         }
     }
 }
-
-
-
-
