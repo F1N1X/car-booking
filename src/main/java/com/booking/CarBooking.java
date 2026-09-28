@@ -1,7 +1,7 @@
-package booking;
+package com.booking;
 
-import car.Car;
-import user.User;
+import com.car.Car;
+import com.user.User;
 
 import java.io.Serial;
 import java.io.Serializable;
@@ -58,8 +58,8 @@ public class CarBooking implements Serializable {
     @Override
     public String toString() {
         return  "id=" + id +
-                "\nuser=" + user +
-                "\ncar=" + car +
+                "\ncom.user=" + user +
+                "\ncom.car=" + car +
                 "\nstartDate=" + startDate +
                 "\tendDate=" + endDate +
                 "\nprice=" + price +

@@ -1,18 +1,18 @@
-
+package com;
 // TODO 1. create a new branch called initial-implementation
 // TODO 2. create a package with your name. i.e com.franco and move this file inside the new package
 // TODO 3. implement https://amigoscode.com/learn/java-cli-build/lectures/3a83ecf3-e837-4ae5-85a8-f8ae3f60f7f5
 
-import booking.*;
-import car.Car;
-import car.CarArrayDataAccessService;
-import car.CarDao;
-import car.CarService;
+import com.booking.*;
+import com.car.Car;
+import com.car.CarArrayDataAccessService;
+import com.car.CarDao;
+import com.car.CarService;
 import com.github.javafaker.Faker;
-import user.User;
-import user.UserArrayDataAccessService;
-import user.UserDao;
-import user.UserService;
+import com.user.User;
+import com.user.UserArrayDataAccessService;
+import com.user.UserDao;
+import com.user.UserService;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
@@ -38,7 +38,7 @@ public class Main {
         Faker faker = new Faker();
         System.out.println(faker.name().firstName());
 
-        // Swap booking implementation here
+        // Swap com.booking implementation here
         //carBookingDao = new CarBookingFileDataAccessService("bookings.dat");
         CarBookingDao carBookingDao = new CarBookingArrayDataAccessService();
         carDao = new CarArrayDataAccessService();
@@ -78,7 +78,7 @@ public class Main {
         return userInput > 0 && userInput <= 8;
     }
 
-    private static void booking(int userChoice) {
+    private static void com.booking(int userChoice) {
       try {
           switch (userChoice) {
               case 1 ->  {
@@ -95,27 +95,27 @@ public class Main {
               }
               case 3 -> {
                   var users = carBookingService.viewAllUsersWithBookings();
-                  for (User user : users)
+                  for (User com.user : users)
                       System.out.println(user);
               }
               case 4 -> {
                   var carBookings = carBookingService.viewAllBookings();
-                  for (CarBooking booking : carBookings)
+                  for (CarBooking com.booking : carBookings)
                       System.out.println(booking);
               }
               case 5 -> {
                   var cars = carBookingService.viewAllAvailableCars();
-                  for (Car car : cars)
+                  for (Car com.car : cars)
                       System.out.println(car);
               }
               case 6 -> {
                   var cars = carBookingService.viewAllAvailableElectricCars();
-                  for (Car car : cars)
+                  for (Car com.car : cars)
                           System.out.println(car);
               }
               case 7 -> {
                   var users = carBookingService.viewAllUsers();
-                  for (User user : users)
+                  for (User com.user : users)
                       System.out.println(user);
               }
               default -> throw new IllegalStateException("Unexpected value: " + userChoice);

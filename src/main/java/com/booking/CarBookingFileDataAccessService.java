@@ -1,6 +1,6 @@
-package booking;
+package com.booking;
 
-import car.Car;
+import com.car.Car;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -99,7 +99,7 @@ public class CarBookingFileDataAccessService implements CarBookingDao {
 
         } catch (IOException e) {
             throw new RuntimeException(
-                    "booking can't be saved",
+                    "com.booking can't be saved",
                     e
             );
         }
@@ -175,7 +175,7 @@ public class CarBookingFileDataAccessService implements CarBookingDao {
     public boolean isCarBooked(Car car) {
 
         if (car == null) {
-            throw new IllegalArgumentException("car can't be null");
+            throw new IllegalArgumentException("com.car can't be null");
         }
 
         File file = new File(filePath);

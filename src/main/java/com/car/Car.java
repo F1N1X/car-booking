@@ -1,4 +1,4 @@
-package car;
+package com.car;
 
 import java.io.Serial;
 import java.io.Serializable;

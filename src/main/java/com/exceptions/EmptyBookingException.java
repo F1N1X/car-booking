@@ -1,4 +1,4 @@
-package exceptions;
+package com.exceptions;
 
 public class EmptyBookingException extends RuntimeException {
     public EmptyBookingException(String message) {

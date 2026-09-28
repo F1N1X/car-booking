@@ -1,6 +1,6 @@
-package booking;
+package com.booking;
 
-import car.Car;
+import com.car.Car;
 
 import java.util.List;
 import java.util.UUID;

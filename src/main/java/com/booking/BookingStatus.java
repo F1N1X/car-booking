@@ -1,4 +1,4 @@
-package booking;
+package com.booking;
 
 public enum BookingStatus {
     ACTIVE,

@@ -1,4 +1,4 @@
-package user;
+package com.user;
 
 import java.io.Serial;
 import java.io.Serializable;

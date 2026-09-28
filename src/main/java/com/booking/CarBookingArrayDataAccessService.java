@@ -1,10 +1,9 @@
-package booking;
+package com.booking;
 
-import car.Car;
-import user.User;
+import com.car.Car;
+import com.user.User;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class CarBookingArrayDataAccessService implements CarBookingDao{
 

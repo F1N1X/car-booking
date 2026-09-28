@@ -1,15 +1,14 @@
-package booking;
+package com.booking;
 
-import car.Car;
-import car.CarService;
-import exceptions.*;
-import user.User;
-import user.UserService;
+import com.car.Car;
+import com.car.CarService;
+import com.exceptions.*;
+import com.user.User;
+import com.user.UserService;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -32,12 +31,12 @@ public class CarBookingService {
 
     public void bookCar(UUID userId, String registerNumber, LocalDate startDate, LocalDate endDate) {
 
-            if (!isValidBookingPeriod(startDate, endDate)) throw new InvalidBookingPeriodException("invalid booking period");
+            if (!isValidBookingPeriod(startDate, endDate)) throw new InvalidBookingPeriodException("invalid com.booking period");
 
             User user = userService.getUserByID(userId)
-                    .orElseThrow( () -> new NoUserFoundException("No user found with id: " + userId));
+                    .orElseThrow( () -> new NoUserFoundException("No com.user found with id: " + userId));
             Car car = carService.getCarByRegistrationNumber(registerNumber)
-                    .orElseThrow( () -> new NoCarFoundException("No car found with registration-number: " + registerNumber));
+                    .orElseThrow( () -> new NoCarFoundException("No com.car found with registration-number: " + registerNumber));
 
             if (carBookingDao.isCarBooked(car)) throw new CarAlreadyBookedException("Car is not available");
 
@@ -67,7 +66,7 @@ public class CarBookingService {
         List<CarBooking> bookings = carBookingDao.getBookings();
 
         if (bookings.isEmpty())
-            throw new NoUserBookedCarException("No user booked cars");
+            throw new NoUserBookedCarException("No com.user booked cars");
 
         return bookings.stream()
                 .map(CarBooking::getUser)
@@ -77,7 +76,7 @@ public class CarBookingService {
     public List<CarBooking> viewAllBookings() {
         List<CarBooking> allBookings = carBookingDao.getBookings();
         if (allBookings.isEmpty())
-            throw new NoBookingFoundException("no booking available");
+            throw new NoBookingFoundException("no com.booking available");
         return allBookings;
     }
 
@@ -89,7 +88,7 @@ public class CarBookingService {
         List<Car> availableCars = filterAvailableCars(allCars, false);
 
         if (availableCars.isEmpty())
-            throw new NoAvailableCarsException("no cars available for booking");
+            throw new NoAvailableCarsException("no cars available for com.booking");
         return availableCars;
     }
 
@@ -101,7 +100,7 @@ public class CarBookingService {
         List<Car> availableCars = filterAvailableCars(allCars, true);
 
         if (availableCars.isEmpty())
-            throw new NoAvailableCarsException("no cars available for booking");
+            throw new NoAvailableCarsException("no cars available for com.booking");
         return availableCars;
     }
 

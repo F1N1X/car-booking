@@ -1,4 +1,4 @@
-package car;
+package com.car;
 
 public enum Brand {
     ALFA_ROMEO,
