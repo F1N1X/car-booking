@@ -4,15 +4,9 @@ import com.booking.CarBooking;
 import com.booking.CarBookingArrayDataAccessService;
 import com.booking.CarBookingDao;
 import com.booking.CarBookingService;
-import com.car.Car;
-import com.car.CarArrayDataAccessService;
-import com.car.CarDao;
-import com.car.CarService;
+import com.car.*;
 import com.github.javafaker.Faker;
-import com.user.User;
-import com.user.UserArrayDataAccessService;
-import com.user.UserDao;
-import com.user.UserService;
+import com.user.*;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
@@ -30,21 +24,21 @@ public class Main {
 
     public static void main(String[] args) {
 
-        // Test für JavaFaker
-        Faker faker = new Faker();
-        System.out.println(faker.name().firstName());
 
         // Booking Implementation
         // CarBookingDao carBookingDao =
         //        new CarBookingFileDataAccessService("bookings.dat");
 
+        UserDao userDao = new UserFakerDataAccessService();
+        CarDao carDao = new CarFakerDataAccessService();
+
         CarBookingDao carBookingDao =
                 new CarBookingArrayDataAccessService();
 
-        carDao = new CarArrayDataAccessService();
+        //carDao = new CarArrayDataAccessService();
         CarService carService = new CarService(carDao);
 
-        userDao = new UserArrayDataAccessService();
+        //userDao = new UserArrayDataAccessService();
         userService = new UserService(userDao);
 
         carBookingService = new CarBookingService(
