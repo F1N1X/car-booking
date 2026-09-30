@@ -26,6 +26,14 @@ public class Car implements Serializable {
         this.isElectric = isElectric;
     }
 
+    public Car(UUID id, String regNumber, BigDecimal rentalPricePerDay, Brand brand, boolean isElectric) {
+        this.id = id;
+        this.regNumber = regNumber;
+        this.rentalPricePerDay = rentalPricePerDay;
+        this.brand = brand;
+        this.isElectric = isElectric;
+    }
+
     public UUID getId() {
         return id;
     }
