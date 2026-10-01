@@ -25,6 +25,17 @@ public class CarBooking implements Serializable {
     private BookingStatus status;
     private LocalDateTime bookedAt;
 
+    public CarBooking(UUID id, User user, Car car, LocalDate startDate, LocalDate endDate, BigDecimal price, BookingStatus status, LocalDateTime bookedAt) {
+        this.id = id;
+        this.user = user;
+        this.car = car;
+        this.startDate = startDate;
+        this.endDate = endDate;
+        this.price = price;
+        this.status = status;
+        this.bookedAt = bookedAt;
+    }
+
     public CarBooking(BigDecimal price,
                       LocalDate startDate,
                       LocalDate endDate,
