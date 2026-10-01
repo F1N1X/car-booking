@@ -39,6 +39,4 @@ public class UserArrayDataAccessService implements UserDao{
     public List<User> getUsers() {
         return users;
     }
-
-
 }
