@@ -7,9 +7,9 @@ import java.util.*;
 
 public class CarBookingArrayDataAccessService implements CarBookingDao{
 
-    private static List<CarBooking> carBookings;
+    private final List<CarBooking> carBookings;
 
-    static {
+    public CarBookingArrayDataAccessService() {
         carBookings = new ArrayList<>();
     }
 
@@ -37,9 +37,6 @@ public class CarBookingArrayDataAccessService implements CarBookingDao{
     }
 
     public List<User> getAllUserBookedCars() {
-        int findBookings = carBookings.size();
-        if (findBookings == 0) return new ArrayList<>();
-
         return carBookings.stream()
                 .map(CarBooking::getUser)
                 .toList();
