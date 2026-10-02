@@ -2,8 +2,11 @@ package com.booking;
 
 import com.car.Brand;
 import com.car.Car;
-import com.car.CarDao;
 import com.car.CarService;
+import com.exceptions.CarAlreadyBookedException;
+import com.exceptions.InvalidBookingPeriodException;
+import com.exceptions.NoCarFoundException;
+import com.exceptions.NoUserFoundException;
 import com.user.UserService;
 import org.junit.jupiter.api.Test;
 
@@ -20,9 +23,8 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyChar;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
@@ -314,5 +316,115 @@ class CarBookingServiceTest {
         // then
         verify(userService).getAllUsers();
         assertThat(actual).isEqualTo(expected);
+    }
+    @Test
+    void shouldThrowWhenBookingPeriodIsInvalid() {
+        // given
+        UUID userId = UUID.fromString("123e4567-e89b-12d3-a456-426614174001");
+
+        // when
+        LocalDate startDate = LocalDate.now().minusDays(1);
+        LocalDate endDate = LocalDate.now().plusDays(3);
+
+        //then
+        assertThatThrownBy(() ->
+                underTest.bookCar(
+                        userId,
+                        "AB-123",
+                        startDate,
+                        endDate
+                )
+        ).isInstanceOf(InvalidBookingPeriodException.class);
+        verifyNoInteractions(userService);
+        verifyNoInteractions(carService);
+        verify(carBookingDao, never()).saveBooking(any());
+    }
+    @Test
+    void shouldThrowWhenUserDoesNotExist() {
+        // given
+        UUID userId = UUID.fromString("123e4567-e89b-12d3-a456-426614174001");
+        LocalDate startDate = LocalDate.now().plusDays(1);
+        LocalDate endDate = LocalDate.now().plusDays(5);
+        // when
+        when(userService.getUserByID(userId)).thenReturn(Optional.empty());
+        //then
+        assertThatThrownBy(() ->
+                underTest.bookCar(
+                        userId,
+                        "AB-123",
+                        startDate,
+                        endDate
+                )
+        ).isInstanceOf(NoUserFoundException.class);
+        verify(userService).getUserByID(userId);
+        verifyNoInteractions(carService);
+        verify(carBookingDao, never()).saveBooking(any());
+    }
+    @Test
+    void shouldThrowWhenCarDoesNotExist() {
+        // given
+        User user = new User(
+                UUID.fromString("123e4567-e89b-12d3-a456-426614174001"),
+                "Test User"
+        );
+        String registerNumber = "AB-123";
+        LocalDate startDate = LocalDate.now().plusDays(1);
+        LocalDate endDate = LocalDate.now().plusDays(5);
+        // when
+        when(userService.getUserByID(user.getId()))
+                .thenReturn(Optional.of(user));
+
+        when(carService.getCarByRegistrationNumber(registerNumber))
+                .thenReturn(Optional.empty());
+         //then
+        assertThatThrownBy(() ->
+                underTest.bookCar(
+                        user.getId(),
+                        registerNumber,
+                        startDate,
+                        endDate
+                )
+        ).isInstanceOf(NoCarFoundException.class);
+        verify(userService).getUserByID(user.getId());
+        verify(carService).getCarByRegistrationNumber(registerNumber);
+        verify(carBookingDao, never()).saveBooking(any());
+    }
+    @Test
+    void shouldThrowWhenCarIsAlreadyBooked() {
+        // given
+        User user = new User(
+                UUID.fromString("123e4567-e89b-12d3-a456-426614174001"),
+                "Test User"
+        );
+
+        Car car = new Car(
+                UUID.fromString("123e4567-e89b-12d3-a456-426614174002"),
+                "AB-123",
+                BigDecimal.valueOf(50),
+                Brand.TESLA,
+                true
+        );
+        LocalDate startDate = LocalDate.now().plusDays(1);
+        LocalDate endDate = LocalDate.now().plusDays(5);
+        // when
+        when(userService.getUserByID(user.getId()))
+                .thenReturn(Optional.of(user));
+        when(carService.getCarByRegistrationNumber(car.getRegNumber()))
+                .thenReturn(Optional.of(car));
+        when(carBookingDao.isCarBooked(car))
+                .thenReturn(true);
+        // then
+        assertThatThrownBy(() ->
+                underTest.bookCar(
+                        user.getId(),
+                        car.getRegNumber(),
+                        startDate,
+                        endDate
+                )
+        ).isInstanceOf(CarAlreadyBookedException.class);
+        verify(userService).getUserByID(user.getId());
+        verify(carService).getCarByRegistrationNumber(car.getRegNumber());
+        verify(carBookingDao).isCarBooked(car);
+        verify(carBookingDao, never()).saveBooking(any());
     }
 }
