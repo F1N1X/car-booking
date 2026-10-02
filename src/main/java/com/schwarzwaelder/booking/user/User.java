@@ -1,0 +1,35 @@
+package com.schwarzwaelder.booking.user;
+
+import java.io.Serial;
+import java.io.Serializable;
+import java.util.UUID;
+
+public class User implements Serializable {
+
+    @Serial
+    private static final long serialVersionUID = 1L;
+    private UUID id;
+    private String name;
+
+    public User(UUID id, String name) {
+        this.id = id;
+        this.name = name;
+    }
+
+    public User(String name) {
+        this.name = name;
+        id = UUID.randomUUID();
+    }
+
+    public UUID getId() {
+        return id;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                '}';
+    }
+}

@@ -1,6 +1,9 @@
 package com.car;
 
-import org.junit.jupiter.api.BeforeEach;
+import com.schwarzwaelder.booking.car.Brand;
+import com.schwarzwaelder.booking.car.Car;
+import com.schwarzwaelder.booking.car.CarDao;
+import com.schwarzwaelder.booking.car.CarService;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -32,7 +35,7 @@ class CarServiceTest {
     @Test
     void getCarByRegistrationNumber() {
         // given
-        Car expectedCar = new Car("abc-123", BigDecimal.valueOf(40),Brand.KIA, false);
+        Car expectedCar = new Car("abc-123", BigDecimal.valueOf(40), Brand.KIA, false);
         when(carDao.getCarByRegistrationNumber("abc-123")).thenReturn(Optional.of(expectedCar));
         // when
         Optional<Car> actual = underTest.getCarByRegistrationNumber(expectedCar.getRegNumber());

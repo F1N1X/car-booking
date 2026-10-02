@@ -1,5 +1,8 @@
 package com.user;
 
+import com.schwarzwaelder.booking.user.User;
+import com.schwarzwaelder.booking.user.UserDao;
+import com.schwarzwaelder.booking.user.UserService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

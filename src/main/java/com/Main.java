@@ -1,12 +1,17 @@
 package com;
 
-import com.booking.CarBooking;
-import com.booking.CarBookingArrayDataAccessService;
-import com.booking.CarBookingDao;
-import com.booking.CarBookingService;
-import com.car.*;
-import com.github.javafaker.Faker;
-import com.user.*;
+import com.schwarzwaelder.booking.CarBooking;
+import com.schwarzwaelder.booking.CarBookingArrayDataAccessService;
+import com.schwarzwaelder.booking.CarBookingDao;
+import com.schwarzwaelder.booking.CarBookingService;
+import com.schwarzwaelder.booking.car.Car;
+import com.schwarzwaelder.booking.car.CarDao;
+import com.schwarzwaelder.booking.car.CarFakerDataAccessService;
+import com.schwarzwaelder.booking.car.CarService;
+import com.schwarzwaelder.booking.user.User;
+import com.schwarzwaelder.booking.user.UserDao;
+import com.schwarzwaelder.booking.user.UserFakerDataAccessService;
+import com.schwarzwaelder.booking.user.UserService;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeParseException;
