@@ -34,7 +34,7 @@ public class CarBookingService {
             if (!isValidBookingPeriod(startDate, endDate)) throw new InvalidBookingPeriodException("invalid com.booking period");
 
             User user = userService.getUserByID(userId)
-                    .orElseThrow( () -> new NoUserFoundException("No com.user found with id: " + userId));
+                    .orElseThrow( () -> new NoUserFoundException("No found with id: " + userId));
             Car car = carService.getCarByRegistrationNumber(registerNumber)
                     .orElseThrow( () -> new NoCarFoundException("No com.car found with registration-number: " + registerNumber));
 
@@ -66,7 +66,7 @@ public class CarBookingService {
         List<CarBooking> bookings = carBookingDao.getBookings();
 
         if (bookings.isEmpty())
-            throw new NoUserBookedCarException("No com.user booked cars");
+            throw new NoUserBookedCarException("No user booked cars");
 
         return bookings.stream()
                 .map(CarBooking::getUser)
@@ -76,7 +76,7 @@ public class CarBookingService {
     public List<CarBooking> viewAllBookings() {
         List<CarBooking> allBookings = carBookingDao.getBookings();
         if (allBookings.isEmpty())
-            throw new NoBookingFoundException("no com.booking available");
+            throw new NoBookingFoundException("no booking available");
         return allBookings;
     }
 
@@ -88,7 +88,7 @@ public class CarBookingService {
         List<Car> availableCars = filterAvailableCars(allCars, false);
 
         if (availableCars.isEmpty())
-            throw new NoAvailableCarsException("no cars available for com.booking");
+            throw new NoAvailableCarsException("no cars available for booking");
         return availableCars;
     }
 
@@ -100,7 +100,7 @@ public class CarBookingService {
         List<Car> availableCars = filterAvailableCars(allCars, true);
 
         if (availableCars.isEmpty())
-            throw new NoAvailableCarsException("no cars available for com.booking");
+            throw new NoAvailableCarsException("no cars available for booking");
         return availableCars;
     }
 
